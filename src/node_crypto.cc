@@ -5470,29 +5470,7 @@ void GetCurves(const FunctionCallbackInfo<Value>& args) {
 }
 
 
-void Certificate::Initialize(Environment* env, Local<Object> target) {
-  HandleScope scope(env->isolate());
-
-  Local<FunctionTemplate> t = env->NewFunctionTemplate(New);
-
-  t->InstanceTemplate()->SetInternalFieldCount(1);
-
-  env->SetProtoMethod(t, "verifySpkac", VerifySpkac);
-  env->SetProtoMethod(t, "exportPublicKey", ExportPublicKey);
-  env->SetProtoMethod(t, "exportChallenge", ExportChallenge);
-
-  target->Set(FIXED_ONE_BYTE_STRING(env->isolate(), "Certificate"),
-              t->GetFunction());
-}
-
-
-void Certificate::New(const FunctionCallbackInfo<Value>& args) {
-  Environment* env = Environment::GetCurrent(args);
-  new Certificate(env, args.This());
-}
-
-
-bool Certificate::VerifySpkac(const char* data, unsigned int len) {
+bool VerifySpkac(const char* data, unsigned int len) {
   bool i = 0;
   EVP_PKEY* pkey = nullptr;
   NETSCAPE_SPKI* spki = nullptr;
@@ -5518,9 +5496,8 @@ bool Certificate::VerifySpkac(const char* data, unsigned int len) {
 }
 
 
-void Certificate::VerifySpkac(const FunctionCallbackInfo<Value>& args) {
-  Certificate* certificate = Unwrap<Certificate>(args.Holder());
-  Environment* env = certificate->env();
+void VerifySpkac(const FunctionCallbackInfo<Value>& args) {
+  Environment* env = Environment::GetCurrent(args);
   bool i = false;
 
   if (args.Length() < 1)
@@ -5535,13 +5512,13 @@ void Certificate::VerifySpkac(const FunctionCallbackInfo<Value>& args) {
   char* data = Buffer::Data(args[0]);
   CHECK_NE(data, nullptr);
 
-  i = certificate->VerifySpkac(data, length);
+  i = VerifySpkac(data, length);
 
   args.GetReturnValue().Set(i);
 }
 
 
-const char* Certificate::ExportPublicKey(const char* data, int len) {
+const char* ExportPublicKey(const char* data, int len) {
   char* buf = nullptr;
   EVP_PKEY* pkey = nullptr;
   NETSCAPE_SPKI* spki = nullptr;
@@ -5582,10 +5559,8 @@ const char* Certificate::ExportPublicKey(const char* data, int len) {
 }
 
 
-void Certificate::ExportPublicKey(const FunctionCallbackInfo<Value>& args) {
+void ExportPublicKey(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
-
-  Certificate* certificate = Unwrap<Certificate>(args.Holder());
 
   if (args.Length() < 1)
     return env->ThrowTypeError("Missing argument");
@@ -5599,7 +5574,7 @@ void Certificate::ExportPublicKey(const FunctionCallbackInfo<Value>& args) {
   char* data = Buffer::Data(args[0]);
   CHECK_NE(data, nullptr);
 
-  const char* pkey = certificate->ExportPublicKey(data, length);
+  const char* pkey = ExportPublicKey(data, length);
   if (pkey == nullptr)
     return args.GetReturnValue().SetEmptyString();
 
@@ -5611,7 +5586,7 @@ void Certificate::ExportPublicKey(const FunctionCallbackInfo<Value>& args) {
 }
 
 
-const char* Certificate::ExportChallenge(const char* data, int len) {
+const char* ExportChallenge(const char* data, int len) {
   NETSCAPE_SPKI* sp = nullptr;
 
   sp = NETSCAPE_SPKI_b64_decode(data, len);
@@ -5627,10 +5602,8 @@ const char* Certificate::ExportChallenge(const char* data, int len) {
 }
 
 
-void Certificate::ExportChallenge(const FunctionCallbackInfo<Value>& args) {
+void ExportChallenge(const FunctionCallbackInfo<Value>& args) {
   Environment* env = Environment::GetCurrent(args);
-
-  Certificate* crt = Unwrap<Certificate>(args.Holder());
 
   if (args.Length() < 1)
     return env->ThrowTypeError("Missing argument");
@@ -5644,7 +5617,7 @@ void Certificate::ExportChallenge(const FunctionCallbackInfo<Value>& args) {
   char* data = Buffer::Data(args[0]);
   CHECK_NE(data, nullptr);
 
-  const char* cert = crt->ExportChallenge(data, len);
+  const char* cert = ExportChallenge(data, len);
   if (cert == nullptr)
     return args.GetReturnValue().SetEmptyString();
 
@@ -5753,8 +5726,10 @@ void InitCrypto(Local<Object> target,
   Hash::Initialize(env, target);
   Sign::Initialize(env, target);
   Verify::Initialize(env, target);
-  Certificate::Initialize(env, target);
 
+  env->SetMethod(target, "certVerifySpkac", VerifySpkac);
+  env->SetMethod(target, "certExportPublicKey", ExportPublicKey);
+  env->SetMethod(target, "certExportChallenge", ExportChallenge);
 #ifndef OPENSSL_NO_ENGINE
   env->SetMethod(target, "setEngine", SetEngine);
 #endif  // !OPENSSL_NO_ENGINE
