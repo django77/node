@@ -1,5 +1,49 @@
 # Node.js ChangeLog
 
+## 2016-03-08, Version 5.8.0 (Stable). @Fishrock123
+
+### Notable changes
+
+* **http_parser**:
+  * revert d77c3bf204 which was causing errors inside of http client callbacks to not propagate.
+* **path**:
+  * a fix to a regression found in path.resolve for absolute paths with a single character name as the root directory (Evan Lucas) [#5589](https://github.com/nodejs/node/pull/5589)
+
+### Commits
+
+* [[`b52bb007b9`](https://github.com/nodejs/node/commit/b52bb007b9)] - **benchmark**: add util.format benchmark (Evan Lucas) [#5360](https://github.com/nodejs/node/pull/5360)
+* [[`65f4ecc89f`](https://github.com/nodejs/node/commit/65f4ecc89f)] - **benchmark**: fix lint errors (Rich Trott) [#5517](https://github.com/nodejs/node/pull/5517)
+* [[`dadd55fcb7`](https://github.com/nodejs/node/commit/dadd55fcb7)] - **build**: update Node.js logo on Win installer (Robert Jefe Lindstaedt) [#5531](https://github.com/nodejs/node/pull/5531)
+* [[`5f9ceae204`](https://github.com/nodejs/node/commit/5f9ceae204)] - **build**: correctly detect clang version (Stefan Budeanu) [#5553](https://github.com/nodejs/node/pull/5553)
+* [[`0dd366ccd5`](https://github.com/nodejs/node/commit/0dd366ccd5)] - **(SEMVER-MINOR)** **child_process**: add keepOpen option to send() (cjihrig) [#5283](https://github.com/nodejs/node/pull/5283)
+* [[`cd973baeaf`](https://github.com/nodejs/node/commit/cd973baeaf)] - **(SEMVER-MINOR)** **child_process**: support options in send() (cjihrig) [#5283](https://github.com/nodejs/node/pull/5283)
+* [[`a161549cfd`](https://github.com/nodejs/node/commit/a161549cfd)] - **(SEMVER-MINOR)** **constants**: define ENGINE_METHOD_RSA (Sam Roberts) [#5463](https://github.com/nodejs/node/pull/5463)
+* [[`c7ebef709f`](https://github.com/nodejs/node/commit/c7ebef709f)] - **(SEMVER-MINOR)** **crypto**: simplify Certificate class bindings (Alexander Makarenko) [#5382](https://github.com/nodejs/node/pull/5382)
+* [[`a5a379f6b3`](https://github.com/nodejs/node/commit/a5a379f6b3)] - **deps**: upgrade to npm 3.7.3 (Kat Marchán) [#5369](https://github.com/nodejs/node/pull/5369)
+* [[`ff42937837`](https://github.com/nodejs/node/commit/ff42937837)] - **dgram**: default send address to 127.0.0.1 or ::1 (Matteo Collina) [#5493](https://github.com/nodejs/node/pull/5493)
+* [[`c17a71c8af`](https://github.com/nodejs/node/commit/c17a71c8af)] - **doc**: document directories in test directory (Michael Barrett) [#5557](https://github.com/nodejs/node/pull/5557)
+* [[`e2a2f8f084`](https://github.com/nodejs/node/commit/e2a2f8f084)] - **doc**: add info to docs on how to submit docs patch (Sequoia McDowell) [#4591](https://github.com/nodejs/node/pull/4591)
+* [[`024482f61d`](https://github.com/nodejs/node/commit/024482f61d)] - **doc**: fix typo in fs.symlink (Michaël Zasso) [#5560](https://github.com/nodejs/node/pull/5560)
+* [[`46344dfbe1`](https://github.com/nodejs/node/commit/46344dfbe1)] - **doc**: improve unhandledException doc copy (James M Snell) [#5287](https://github.com/nodejs/node/pull/5287)
+* [[`054702272b`](https://github.com/nodejs/node/commit/054702272b)] - **doc**: update link green to match homepage (silverwind) [#5548](https://github.com/nodejs/node/pull/5548)
+* [[`6754fb526e`](https://github.com/nodejs/node/commit/6754fb526e)] - **doc**: update V8 URL (Craig Akimoto) [#5530](https://github.com/nodejs/node/pull/5530)
+* [[`dd6bf801e6`](https://github.com/nodejs/node/commit/dd6bf801e6)] - **(SEMVER-MINOR)** **doc**: correct name of engine methods (Sam Roberts) [#5463](https://github.com/nodejs/node/pull/5463)
+* [[`57aa35b254`](https://github.com/nodejs/node/commit/57aa35b254)] - **path**: fix normalize for absolutes (Evan Lucas) [#5589](https://github.com/nodejs/node/pull/5589)
+* [[`dc48401690`](https://github.com/nodejs/node/commit/dc48401690)] - **(SEMVER-MINOR)** **repl**: accept no arguments to start() (cjihrig) [#5388](https://github.com/nodejs/node/pull/5388)
+* [[`42fba0a084`](https://github.com/nodejs/node/commit/42fba0a084)] - **src,http**: fix uncaughtException miss in http (Trevor Norris) [#5591](https://github.com/nodejs/node/pull/5591)
+* [[`5621afcc41`](https://github.com/nodejs/node/commit/5621afcc41)] - **test**: add test-npm-install to parallel tests suite (Myles Borins) [#5166](https://github.com/nodejs/node/pull/5166)
+* [[`c90a647f46`](https://github.com/nodejs/node/commit/c90a647f46)] - **test**: remove broken debugger scenarios (Rich Trott) [#5532](https://github.com/nodejs/node/pull/5532)
+* [[`c8b6e94806`](https://github.com/nodejs/node/commit/c8b6e94806)] - **test**: bug repro for vm function redefinition (cjihrig) [#5528](https://github.com/nodejs/node/pull/5528)
+* [[`9dfb8979ed`](https://github.com/nodejs/node/commit/9dfb8979ed)] - **test**: prevent flakey test on pi2 (Trevor Norris) [#5537](https://github.com/nodejs/node/pull/5537)
+* [[`701a2c9aa7`](https://github.com/nodejs/node/commit/701a2c9aa7)] - **test**: check memoryUsage properties (Wyatt Preul) [#5546](https://github.com/nodejs/node/pull/5546)
+* [[`c4624b8722`](https://github.com/nodejs/node/commit/c4624b8722)] - **tools**: reduce verbosity of cpplint (Sakthipriyan Vairamani) [#5578](https://github.com/nodejs/node/pull/5578)
+* [[`3e41c1308f`](https://github.com/nodejs/node/commit/3e41c1308f)] - **tools**: enable no-self-assign ESLint rule (Rich Trott) [#5552](https://github.com/nodejs/node/pull/5552)
+* [[`694aa91d6a`](https://github.com/nodejs/node/commit/694aa91d6a)] - **tools**: support testing known issues (cjihrig) [#5528](https://github.com/nodejs/node/pull/5528)
+* [[`2682b1c518`](https://github.com/nodejs/node/commit/2682b1c518)] - **tools**: enable linting for benchmarks (Rich Trott) [#5517](https://github.com/nodejs/node/pull/5517)
+* [[`4729974cb2`](https://github.com/nodejs/node/commit/4729974cb2)] - **tools**: enable no-extra-parens in ESLint (Rich Trott) [#5512](https://github.com/nodejs/node/pull/5512)
+* [[`aee1ff3bc6`](https://github.com/nodejs/node/commit/aee1ff3bc6)] - **util**: improve format() performance further (Brian White) [#5360](https://github.com/nodejs/node/pull/5360)
+* [[`269b487de6`](https://github.com/nodejs/node/commit/269b487de6)] - **util**: improve util.format performance (Evan Lucas) [#5360](https://github.com/nodejs/node/pull/5360)
+
 ## 2016-03-02, Version 5.7.1 (Stable), @Fishrock123
 
 ### Notable changes
